@@ -92,7 +92,7 @@ class HomeView extends GetView<HomeController> {
                 ],
               ),
               Container(
-                margin: EdgeInsets.only(bottom: 0),
+                margin: EdgeInsets.only(bottom: 15),
                 child: ElevatedButton(
                   onPressed: () async => {
                     await availableCameras().then((value) =>

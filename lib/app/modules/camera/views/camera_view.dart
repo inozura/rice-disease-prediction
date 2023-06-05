@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:rice_prediction/constant/colors.dart';
 
 import '../controllers/camera_controller.dart';
 
@@ -12,27 +13,27 @@ class CameraView extends GetView<CameraController> {
   Widget build(BuildContext context) {
     dynamic argument = Get.arguments;
     CameraController cameraController = Get.put(CameraController());
-
+    print("page rebuild");
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('CameraView'),
-        centerTitle: true,
-      ),
       body: Stack(children: [
-        Obx(() => (cameraController.camera.value != null &&
-                controller.camera.value!.value.isInitialized)
-            ? CameraLib.CameraPreview(
-                cameraController.camera.value ?? argument["camera"]![0])
-            : Container(
-                color: Colors.black,
-                child: const Center(child: CircularProgressIndicator()))),
+        GetBuilder<CameraController>(
+            builder: (controller) => CallCamera(controller)),
         Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: MediaQuery.of(context).size.height * 0.20,
+              height: MediaQuery.of(context).size.height * 0.13,
               decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-                  color: Colors.black),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                color: Color(backgroundColor),
+                boxShadow: [
+                  BoxShadow(
+                    offset: Offset(0, -7),
+                    spreadRadius: 5,
+                    blurRadius: 15,
+                    color: Color.fromRGBO(0, 0, 0, 0.1),
+                  )
+                ],
+              ),
               child:
                   Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
                 Expanded(
@@ -43,22 +44,47 @@ class CameraView extends GetView<CameraController> {
                       cameraController.isRearCameraSelected.value
                           ? CupertinoIcons.switch_camera
                           : CupertinoIcons.switch_camera_solid,
-                      color: Colors.white)),
+                      color: const Color(grayIcon))),
                   onPressed: () => cameraController.changeCameraRear(),
                 )),
                 Expanded(
-                    child: IconButton(
-                  onPressed: () =>
-                      print(cameraController.camera.value!.value.isInitialized),
-                  iconSize: 50,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  icon: const Icon(Icons.circle, color: Colors.white),
+                    child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    IconButton(
+                      onPressed: () =>
+                          print(cameraController.camera.value.isInitialized),
+                      iconSize: 35,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      icon: const Icon(Icons.circle_sharp,
+                          color: Color(grayIcon)),
+                    ),
+                    IconButton(
+                      onPressed: () =>
+                          print(cameraController.camera.value.isInitialized),
+                      iconSize: 60,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      icon: const Icon(Icons.circle_outlined,
+                          color: Color(grayIcon)),
+                    )
+                  ],
                 )),
                 const Spacer(),
               ]),
             )),
       ]),
     );
+  }
+
+  StatelessWidget CallCamera(CameraController controller) {
+    if (controller.camera.value.isInitialized) {
+      return CameraLib.CameraPreview(controller.camera);
+    }
+
+    return Container(
+        color: Colors.black,
+        child: const Center(child: CircularProgressIndicator()));
   }
 }

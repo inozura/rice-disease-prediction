@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart' as CameraLib;
@@ -5,18 +6,18 @@ import 'package:camera/camera.dart' as CameraLib;
 class CameraController extends GetxController {
   //TODO: Implement CameraController
   dynamic argument = Get.arguments;
-  final camera = Rxn<CameraLib.CameraController>();
+  late CameraLib.CameraController camera;
   RxBool isRearCameraSelected = true.obs;
 
   final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
-  }
 
-  @override
-  void onReady() {
-    super.onReady();
+    // Hidding Status bar by system
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+
+    // Camera initial logic
     if (argument == null || argument["camera"].length == 0) {
       Get.snackbar("ERROR", "Camera module not found or not approved",
           snackPosition: SnackPosition.BOTTOM);
@@ -28,10 +29,19 @@ class CameraController extends GetxController {
   }
 
   @override
+  void onReady() {
+    super.onReady();
+  }
+
+  @override
   void onClose() {
     super.onClose();
+
+    // Reshow status bar
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
     if (argument != null && argument["camera"].length > 0) {
-      camera.value!.dispose();
+      camera.dispose();
     }
   }
 
@@ -43,15 +53,15 @@ class CameraController extends GetxController {
   }
 
   Future takePicture() async {
-    if (!camera.value!.value.isInitialized) {
+    if (!camera.value.isInitialized) {
       return null;
     }
-    if (camera.value!.value.isInitialized) {
+    if (camera.value.isInitialized) {
       return null;
     }
     try {
-      await camera.value!.setFlashMode(CameraLib.FlashMode.off);
-      CameraLib.XFile picture = await camera.value!.takePicture();
+      await camera.setFlashMode(CameraLib.FlashMode.off);
+      CameraLib.XFile picture = await camera.takePicture();
       Get.toNamed("/preview", arguments: {"picture": picture});
     } on CameraLib.CameraException catch (e) {
       debugPrint('Error occured while taking picture: $e');
@@ -60,10 +70,13 @@ class CameraController extends GetxController {
   }
 
   Future initCamera(CameraLib.CameraDescription cameraDescription) async {
-    camera.value = CameraLib.CameraController(
+    camera = CameraLib.CameraController(
         cameraDescription, CameraLib.ResolutionPreset.high);
     try {
-      await camera.value!.initialize();
+      await camera.initialize().then((_) {
+        print("initialize");
+        update();
+      });
     } on CameraLib.CameraException catch (e) {
       debugPrint("camera error $e");
     }
