@@ -37,12 +37,14 @@ class CameraController extends GetxController {
   void onClose() {
     super.onClose();
 
+    closeScreen();
+  }
+
+  void closeScreen() {
     // Reshow status bar
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-    if (argument != null && argument["camera"].length > 0) {
-      camera.dispose();
-    }
+    camera.dispose();
   }
 
   void changeCameraRear() {
@@ -56,13 +58,13 @@ class CameraController extends GetxController {
     if (!camera.value.isInitialized) {
       return null;
     }
-    if (camera.value.isInitialized) {
-      return null;
-    }
+
     try {
       await camera.setFlashMode(CameraLib.FlashMode.off);
       CameraLib.XFile picture = await camera.takePicture();
-      Get.toNamed("/preview", arguments: {"picture": picture});
+      print(picture);
+      Get.toNamed("/preview",
+          arguments: {"picture": picture, "camera": camera});
     } on CameraLib.CameraException catch (e) {
       debugPrint('Error occured while taking picture: $e');
       return null;

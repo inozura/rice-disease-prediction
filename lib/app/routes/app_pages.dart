@@ -26,9 +26,9 @@ class AppPages {
         binding: CameraBinding(),
         transition: Transition.rightToLeftWithFade),
     GetPage(
-      name: _Paths.PREVIEW,
-      page: () => const PreviewView(),
-      binding: PreviewBinding(),
-    ),
+        name: _Paths.PREVIEW,
+        page: () => const PreviewView(),
+        binding: PreviewBinding(),
+        transition: Transition.rightToLeftWithFade),
   ];
 }

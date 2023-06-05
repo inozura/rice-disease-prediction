@@ -1,12 +1,26 @@
+import 'package:camera/camera.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class PreviewController extends GetxController {
   //TODO: Implement PreviewController
+  dynamic argument = Get.arguments;
+  late CameraController camera;
+  late XFile picture;
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
+
+    // Init picture state
+    picture = argument["picture"];
+
+    // Init camera state
+    camera = argument["camera"];
+    camera.pausePreview();
+
+    // Reshow status bar
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   }
 
   @override
@@ -17,7 +31,10 @@ class PreviewController extends GetxController {
   @override
   void onClose() {
     super.onClose();
-  }
 
-  void increment() => count.value++;
+    camera.resumePreview();
+
+    // Hide status bar
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+  }
 }

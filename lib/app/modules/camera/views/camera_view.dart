@@ -11,9 +11,8 @@ class CameraView extends GetView<CameraController> {
   const CameraView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    dynamic argument = Get.arguments;
     CameraController cameraController = Get.put(CameraController());
-    print("page rebuild");
+
     return Scaffold(
       body: Stack(children: [
         GetBuilder<CameraController>(
@@ -52,8 +51,7 @@ class CameraView extends GetView<CameraController> {
                   alignment: AlignmentDirectional.center,
                   children: [
                     IconButton(
-                      onPressed: () =>
-                          print(cameraController.camera.value.isInitialized),
+                      onPressed: () => controller.takePicture(),
                       iconSize: 35,
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
@@ -61,8 +59,7 @@ class CameraView extends GetView<CameraController> {
                           color: Color(grayIcon)),
                     ),
                     IconButton(
-                      onPressed: () =>
-                          print(cameraController.camera.value.isInitialized),
+                      onPressed: () => controller.takePicture(),
                       iconSize: 60,
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
