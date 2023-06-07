@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 class PreviewController extends GetxController {
   //TODO: Implement PreviewController
-  dynamic argument = Get.arguments;
+  dynamic arguments = Get.arguments;
   late CameraController camera;
   late XFile picture;
 
@@ -13,10 +13,10 @@ class PreviewController extends GetxController {
     super.onInit();
 
     // Init picture state
-    picture = argument["picture"];
+    picture = arguments["picture"];
 
     // Init camera state
-    camera = argument["camera"];
+    camera = arguments["camera"];
     camera.pausePreview();
 
     // Reshow status bar

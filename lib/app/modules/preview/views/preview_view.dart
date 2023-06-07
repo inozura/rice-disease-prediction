@@ -56,7 +56,7 @@ class PreviewView extends GetView<PreviewController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                  margin: const EdgeInsets.only(top: 20, left: 10),
+                  margin: const EdgeInsets.only(top: 30, left: 10),
                   alignment: Alignment.topLeft,
                   child: IconButton(
                       onPressed: () => Get.back(),
@@ -102,7 +102,10 @@ class PreviewView extends GetView<PreviewController> {
               Container(
                 margin: EdgeInsets.only(bottom: 30),
                 child: ElevatedButton(
-                  onPressed: () async => {},
+                  onPressed: () => {
+                    Get.toNamed("/result",
+                        arguments: {"picture": controller.picture})
+                  },
                   style: const ButtonStyle(
                       shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(25)))),

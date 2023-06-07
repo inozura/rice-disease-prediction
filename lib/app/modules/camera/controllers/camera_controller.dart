@@ -47,11 +47,15 @@ class CameraController extends GetxController {
     camera.dispose();
   }
 
-  void changeCameraRear() {
+  void changeCameraRear() async {
     isRearCameraSelected.value = !isRearCameraSelected.value;
     initCamera(isRearCameraSelected.value
         ? argument["camera"]![0]
         : argument["camera"]![1]);
+
+    if (isRearCameraSelected.value) {
+      await camera.lockCaptureOrientation();
+    }
   }
 
   Future takePicture() async {
@@ -61,8 +65,8 @@ class CameraController extends GetxController {
 
     try {
       await camera.setFlashMode(CameraLib.FlashMode.off);
+      print(camera);
       CameraLib.XFile picture = await camera.takePicture();
-      print(picture);
       Get.toNamed("/preview",
           arguments: {"picture": picture, "camera": camera});
     } on CameraLib.CameraException catch (e) {

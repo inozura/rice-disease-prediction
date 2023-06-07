@@ -6,6 +6,8 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/preview/bindings/preview_binding.dart';
 import '../modules/preview/views/preview_view.dart';
+import '../modules/result/bindings/result_binding.dart';
+import '../modules/result/views/result_view.dart';
 
 part 'app_routes.dart';
 
@@ -29,6 +31,11 @@ class AppPages {
         name: _Paths.PREVIEW,
         page: () => const PreviewView(),
         binding: PreviewBinding(),
+        transition: Transition.rightToLeftWithFade),
+    GetPage(
+        name: _Paths.RESULT,
+        page: () => const ResultView(),
+        binding: ResultBinding(),
         transition: Transition.rightToLeftWithFade),
   ];
 }
