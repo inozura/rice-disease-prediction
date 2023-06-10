@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:camera/camera.dart' as CameraLib;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,43 +35,52 @@ class CameraView extends GetView<CameraController> {
                   )
                 ],
               ),
-              child:
-                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                Expanded(
-                    child: IconButton(
-                  padding: EdgeInsets.zero,
-                  iconSize: 30,
-                  icon: Obx(() => Icon(
-                      cameraController.isRearCameraSelected.value
-                          ? CupertinoIcons.switch_camera
-                          : CupertinoIcons.switch_camera_solid,
-                      color: const Color(grayIcon))),
-                  onPressed: () => cameraController.changeCameraRear(),
-                )),
-                Expanded(
-                    child: Stack(
-                  alignment: AlignmentDirectional.center,
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      onPressed: () => controller.takePicture(),
-                      iconSize: 35,
+                    Expanded(
+                        child: IconButton(
                       padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                      icon: const Icon(Icons.circle_sharp,
-                          color: Color(grayIcon)),
-                    ),
-                    IconButton(
-                      onPressed: () => controller.takePicture(),
-                      iconSize: 60,
+                      iconSize: 30,
+                      icon: Obx(() => Icon(
+                          cameraController.isRearCameraSelected.value
+                              ? CupertinoIcons.switch_camera
+                              : CupertinoIcons.switch_camera_solid,
+                          color: const Color(grayIcon))),
+                      onPressed: () => cameraController.changeCameraRear(),
+                    )),
+                    Expanded(
+                        child: Stack(
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        IconButton(
+                          onPressed: () => controller.takePicture(),
+                          iconSize: 35,
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          icon: const Icon(Icons.circle_sharp,
+                              color: Color(grayIcon)),
+                        ),
+                        IconButton(
+                          onPressed: () => controller.takePicture(),
+                          iconSize: 60,
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          icon: const Icon(Icons.circle_outlined,
+                              color: Color(grayIcon)),
+                        )
+                      ],
+                    )),
+                    Expanded(
+                        child: IconButton(
                       padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                      icon: const Icon(Icons.circle_outlined,
+                      iconSize: 30,
+                      icon: const Icon(Icons.photo_library,
                           color: Color(grayIcon)),
-                    )
-                  ],
-                )),
-                const Spacer(),
-              ]),
+                      onPressed: () => cameraController.pickImageFromGallery(),
+                    )),
+                  ]),
             )),
       ]),
     );

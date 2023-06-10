@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart' as CameraLib;
+import 'package:image_picker/image_picker.dart';
 
 class CameraController extends GetxController {
   //TODO: Implement CameraController
@@ -47,25 +48,37 @@ class CameraController extends GetxController {
     camera.dispose();
   }
 
-  void changeCameraRear() async {
-    isRearCameraSelected.value = !isRearCameraSelected.value;
-    initCamera(isRearCameraSelected.value
-        ? argument["camera"]![0]
-        : argument["camera"]![1]);
+  Future<void> pickImageFromGallery() async {
+    final ImagePicker picker = ImagePicker();
+    final response = await picker.pickImage(source: ImageSource.gallery);
 
-    if (isRearCameraSelected.value) {
-      await camera.lockCaptureOrientation();
+    if (response != null) {
+      Get.toNamed("/preview",
+          arguments: {"picture": response, "camera": camera});
     }
   }
 
-  Future takePicture() async {
+  void changeCameraRear() async {
+    isRearCameraSelected.value = !isRearCameraSelected.value;
+
+    final cameras = await CameraLib.availableCameras();
+
+    if (camera != null) {
+      await camera.dispose();
+    }
+
+    initCamera(isRearCameraSelected.value ? cameras[0] : cameras[1]);
+  }
+
+  Future<void> takePicture() async {
     if (!camera.value.isInitialized) {
       return null;
     }
 
+    print(camera);
+
     try {
       await camera.setFlashMode(CameraLib.FlashMode.off);
-      print(camera);
       CameraLib.XFile picture = await camera.takePicture();
       Get.toNamed("/preview",
           arguments: {"picture": picture, "camera": camera});
@@ -78,9 +91,9 @@ class CameraController extends GetxController {
   Future initCamera(CameraLib.CameraDescription cameraDescription) async {
     camera = CameraLib.CameraController(
         cameraDescription, CameraLib.ResolutionPreset.high);
+
     try {
       await camera.initialize().then((_) {
-        print("initialize");
         update();
       });
     } on CameraLib.CameraException catch (e) {

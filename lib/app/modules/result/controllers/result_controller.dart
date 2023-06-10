@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 class ResultController extends GetxController {
   //TODO: Implement ResultController
   dynamic arguments = Get.arguments;
+  RxBool isOpenDialog = false.obs;
   late XFile picture;
 
   @override
@@ -22,5 +23,9 @@ class ResultController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  void changeOpenDialog(bool value) {
+    isOpenDialog.value = value;
   }
 }
