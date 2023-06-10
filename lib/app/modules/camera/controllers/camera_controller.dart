@@ -16,7 +16,7 @@ class CameraController extends GetxController {
     super.onInit();
 
     // Hidding Status bar by system
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
     // Camera initial logic
     if (argument == null || argument["camera"].length == 0) {
@@ -43,7 +43,7 @@ class CameraController extends GetxController {
 
   void closeScreen() {
     // Reshow status bar
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
     camera.dispose();
   }

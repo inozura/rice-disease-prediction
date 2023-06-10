@@ -20,7 +20,7 @@ class PreviewController extends GetxController {
     camera.pausePreview();
 
     // Reshow status bar
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   }
 
   @override
@@ -35,6 +35,6 @@ class PreviewController extends GetxController {
     camera.resumePreview();
 
     // Hide status bar
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   }
 }
