@@ -30,7 +30,7 @@ class ResultView extends GetView<ResultController> {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: FileImage(File(controller.picture.path)),
-                        fit: BoxFit.fill)),
+                        fit: BoxFit.cover)),
               ),
               Container(
                 height: MediaQuery.of(context).size.height,
