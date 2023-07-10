@@ -74,7 +74,7 @@ class PreviewController extends GetxController {
         {
           "confidence": confidenceSplit.toStringAsFixed(2),
           "index": 2,
-          "label": "leaf smut"
+          "label": "Leaf Smut"
         },
       ];
     } else if (mapOutput["index"] == 1) {
@@ -92,7 +92,7 @@ class PreviewController extends GetxController {
         {
           "confidence": confidenceSplit.toStringAsFixed(2),
           "index": 2,
-          "label": "leaf smut"
+          "label": "Leaf Smut"
         },
       ];
     } else if (mapOutput["index"] == 2) {
@@ -100,7 +100,7 @@ class PreviewController extends GetxController {
         {
           "confidence": confidenceOutput.toStringAsFixed(2),
           "index": 2,
-          "label": "leaf smut"
+          "label": "Leaf Smut"
         },
         {
           "confidence": confidenceSplit.toStringAsFixed(2),
