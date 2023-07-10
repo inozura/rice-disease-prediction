@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rice_prediction/app/modules/home/bindings/home_binding.dart';
 import 'package:rice_prediction/app/modules/home/views/home_view.dart';
 import 'package:rice_prediction/app/routes/app_pages.dart';
 import 'package:rice_prediction/widgets/coloredsafearea.dart';

@@ -77,7 +77,9 @@ class ResultView extends GetView<ResultController> {
                               children: [
                                 Countup(
                                   begin: 0,
-                                  end: 90,
+                                  end: (double.parse(
+                                          controller.result[0]["confidence"]) *
+                                      100),
                                   duration: const Duration(seconds: 2),
                                   separator: ',',
                                   style: const TextStyle(
@@ -99,7 +101,7 @@ class ResultView extends GetView<ResultController> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                "Bacterial leaf blight",
+                                controller.result[0]["label"],
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w600,
@@ -135,6 +137,13 @@ class ResultView extends GetView<ResultController> {
                   topRight: Radius.circular(15),
                 ),
                 onPanelSlide: (position) {
+                  print(position);
+                  if (position == 1.0) {
+                    controller.changeFullExpanded(true);
+                  }
+                  if (position <= 0.36) {
+                    controller.changeFullExpanded(false);
+                  }
                   if (position > 0.3) {
                     controller.changeOpenDialog(true);
                   }
@@ -163,8 +172,8 @@ class ResultView extends GetView<ResultController> {
                     Container(
                       padding: const EdgeInsets.only(top: 10),
                       margin: const EdgeInsets.only(bottom: 30),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                      child: Wrap(
+                        direction: Axis.horizontal,
                         children: [
                           Container(
                             padding: const EdgeInsets.only(left: 20, right: 20),
@@ -204,207 +213,124 @@ class ResultView extends GetView<ResultController> {
                             ),
                           ),
 
-                          // LIST VIEW
                           Container(
-                            height: 110,
-                            child: ListView(
-                              padding: const EdgeInsets.only(
-                                  left: 20, bottom: 3, top: 3),
-                              scrollDirection: Axis.horizontal,
-                              physics: const BouncingScrollPhysics(),
-                              children: [
-                                // BLIGHT
-                                Container(
-                                  margin: const EdgeInsets.only(right: 19.2),
-                                  padding: const EdgeInsets.all(10),
-                                  height: 90,
-                                  width: 148,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color:
-                                                Colors.black45.withOpacity(0.2),
-                                            spreadRadius: 0,
-                                            blurRadius: 3,
-                                            offset: const Offset(1, 2))
-                                      ]),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            "Bacterial leaf blight",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12,
-                                                color: Colors.black
-                                                    .withAlpha(100)),
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 10),
-                                        child: Row(
+                              height: MediaQuery.of(context).size.height * 0.8,
+                              child: Column(
+                                children: [
+                                  // LIST VIEW
+                                  Container(
+                                    height: 110,
+                                    child: ListView.builder(
+                                      itemCount: controller.result.length,
+                                      padding: const EdgeInsets.only(
+                                          left: 20, bottom: 3, top: 3),
+                                      scrollDirection: Axis.horizontal,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemBuilder: (context, index) =>
+                                          Container(
+                                        margin:
+                                            const EdgeInsets.only(right: 19.2),
+                                        padding: const EdgeInsets.all(10),
+                                        height: 90,
+                                        width: 148,
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.black45
+                                                      .withOpacity(0.2),
+                                                  spreadRadius: 0,
+                                                  blurRadius: 3,
+                                                  offset: const Offset(1, 2))
+                                            ]),
+                                        child: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                              MainAxisAlignment.center,
                                           children: [
-                                            const Text(
-                                              "90",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 24,
-                                                  color: Color(primary)),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  controller.result[index]
+                                                      ["label"],
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 12,
+                                                      color: Colors.black
+                                                          .withAlpha(100)),
+                                                ),
+                                              ],
                                             ),
-                                            Text(
-                                              "%",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w800,
-                                                  fontSize: 24,
-                                                  color: Colors.black
-                                                      .withAlpha(200)),
+                                            Container(
+                                              margin: const EdgeInsets.only(
+                                                  top: 10),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    (double.parse(controller
+                                                                        .result[
+                                                                    index][
+                                                                "confidence"]) *
+                                                            100)
+                                                        .toStringAsFixed(0),
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        fontSize: 24,
+                                                        color: Color(primary)),
+                                                  ),
+                                                  Text(
+                                                    "%",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        fontSize: 24,
+                                                        color: Colors.black
+                                                            .withAlpha(200)),
+                                                  )
+                                                ],
+                                              ),
                                             )
                                           ],
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-
-                                // Brownspot
-                                Container(
-                                  margin: const EdgeInsets.only(right: 19.2),
-                                  padding: const EdgeInsets.all(10),
-                                  height: 90,
-                                  width: 148,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color:
-                                                Colors.black45.withOpacity(0.2),
-                                            spreadRadius: 0,
-                                            blurRadius: 3,
-                                            offset: const Offset(1, 2))
-                                      ]),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            "Brownspot",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12,
-                                                color: Colors.black
-                                                    .withAlpha(100)),
-                                          ),
-                                        ],
                                       ),
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 10),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            const Text(
-                                              "5",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 24,
-                                                  color: Color(primary)),
-                                            ),
-                                            Text(
-                                              "%",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w800,
-                                                  fontSize: 24,
-                                                  color: Colors.black
-                                                      .withAlpha(200)),
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                    ],
+                                    ),
                                   ),
-                                ),
 
-                                //
-                                Container(
-                                  margin: const EdgeInsets.only(right: 19.2),
-                                  padding: const EdgeInsets.all(10),
-                                  height: 90,
-                                  width: 148,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color:
-                                                Colors.black45.withOpacity(0.2),
-                                            spreadRadius: 0,
-                                            blurRadius: 3,
-                                            offset: const Offset(1, 2))
-                                      ]),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            "Brownspot",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12,
-                                                color: Colors.black
-                                                    .withAlpha(100)),
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 10),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            const Text(
-                                              "5",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 24,
-                                                  color: Color(primary)),
-                                            ),
-                                            Text(
-                                              "%",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w800,
-                                                  fontSize: 24,
-                                                  color: Colors.black
-                                                      .withAlpha(200)),
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                                  Obx(() => AnimatedOpacity(
+                                        opacity: controller.isFullExpanded.value
+                                            ? 1
+                                            : 0,
+                                        duration:
+                                            const Duration(microseconds: 1000),
+                                        child: Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.43,
+                                            margin:
+                                                const EdgeInsets.only(top: 20),
+                                            padding: const EdgeInsets.only(
+                                                left: 25, right: 25),
+                                            child: SingleChildScrollView(
+                                              physics: BouncingScrollPhysics(),
+                                              scrollDirection: Axis.vertical,
+                                              child:
+                                                  Text(controller.suggestion),
+                                            )),
+                                      ))
+                                ],
+                              )),
 
-                          const SizedBox(
-                            height: 30,
-                          ),
+                          // const SizedBox(
+                          //   height: 30,
+                          // ),
                         ],
                       ),
                     ),

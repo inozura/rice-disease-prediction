@@ -106,8 +106,9 @@ class PreviewView extends GetView<PreviewController> {
                   margin: EdgeInsets.only(bottom: 15),
                   child: ElevatedButton(
                     onPressed: () => {
-                      Get.toNamed("/result",
-                          arguments: {"picture": controller.picture})
+                      controller.predictImage()
+                      // Get.toNamed("/result",
+                      //     arguments: {"picture": controller.picture})
                     },
                     style: const ButtonStyle(
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
