@@ -19,10 +19,6 @@ jobs:
         with:
           channel: 'stable'
           cache: true
-      - name: ⚙️ Setup Melos
-        uses: bluefireteam/melos-action@v2
-      - name: ⚙️ Install dependencies for all packages
-        run: melos build:pub_get:all
       - name: ⚙️ Setup Java
         uses: actions/setup-java@v3
         with:
