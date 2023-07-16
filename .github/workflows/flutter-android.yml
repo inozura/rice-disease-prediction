@@ -7,20 +7,32 @@ on:
 
 jobs:
   build:
+    name: Build Android
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '12.x'
-      - uses: subosito/flutter-action@v1
+      - name: ⬇️ Checkout repository
+        uses: actions/checkout@v3
+      - name: ⚙️ Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-      - run: flutter pub get
-      - run: flutter format --set-exit-if-changed .
-      - run: flutter analyze .
-      - run: flutter build apk
-      - uses: actions/upload-artifact@v1
+          cache: true
+      - name: ⚙️ Setup Melos
+        uses: bluefireteam/melos-action@v2
+      - name: ⚙️ Install dependencies for all packages
+        run: melos build:pub_get:all
+      - name: ⚙️ Setup Java
+        uses: actions/setup-java@v3
         with:
-          name: release-apk
-          path: build/app/outputs/apk/release/app-release.apk
+          distribution: 'zulu'
+          java-version: "12.x"
+          cache: 'gradle'
+        id: java
+      - name: 🤖🔨 Build Android app
+        run: |
+          pushd app/
+          flutter build appbundle --debug --flavor dev -t lib/main_dev.dart
+          popd
+        shell: bash
