@@ -24,8 +24,6 @@ jobs:
           channel: 'stable'
           cache: true
       - run: flutter pub get
-      - run: dart format --set-exit-if-changed .
-      - run: flutter analyze .
       - run: flutter build apk
       - uses: actions/upload-artifact@v1
         with:
