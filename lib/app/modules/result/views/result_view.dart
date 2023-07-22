@@ -344,10 +344,7 @@ class ResultView extends GetView<ResultController> {
                   bottom: controller.isOpenDialog.value ? 10 : -50,
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: ElevatedButton(
-                    onPressed: () => {
-                      Get.toNamed("/result",
-                          arguments: {"picture": controller.picture})
-                    },
+                    onPressed: () => {Get.offAndToNamed("/home")},
                     style: const ButtonStyle(
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius:

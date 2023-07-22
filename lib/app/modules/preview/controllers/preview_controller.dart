@@ -1,15 +1,18 @@
-import 'package:camera/camera.dart';
-import 'package:flutter/material.dart';
+import 'package:camera/camera.dart' as CameraLib;
 import 'package:get/get.dart';
 import 'package:tflite/tflite.dart';
+
+import '../../camera/controllers/camera_controller.dart';
 
 class PreviewController extends GetxController {
   //TODO: Implement PreviewController
   dynamic arguments = Get.arguments;
-  late CameraController camera;
-  late XFile picture;
+  late CameraLib.CameraController camera;
+  late CameraLib.XFile picture;
   dynamic results;
   List resultTraining = [];
+
+  CameraController cameraController = Get.put(CameraController());
 
   @override
   void onInit() async {
@@ -20,7 +23,7 @@ class PreviewController extends GetxController {
 
     // Init camera state
     camera = arguments["camera"];
-    camera.pausePreview();
+    // camera.pausePreview(); //Disable for now
 
     // Init model
     await Tflite.loadModel(
@@ -39,8 +42,10 @@ class PreviewController extends GetxController {
   void onClose() {
     super.onClose();
 
+    cameraController.updateGetBuilder();
     camera.resumePreview();
     Tflite.close();
+
     // Hide status bar
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
   }

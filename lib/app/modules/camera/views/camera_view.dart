@@ -20,7 +20,7 @@ class CameraView extends GetView<CameraController> {
       child: Scaffold(
         body: Stack(children: [
           GetBuilder<CameraController>(
-              builder: (controller) => CallCamera(controller)),
+              builder: (controller) => CallCamera(cameraController)),
           Align(
               alignment: Alignment.bottomCenter,
               child: Container(

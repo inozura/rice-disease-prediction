@@ -48,13 +48,20 @@ class CameraController extends GetxController {
     camera.dispose();
   }
 
+  void updateGetBuilder() {
+    update();
+    camera.resumePreview();
+  }
+
   Future<void> pickImageFromGallery() async {
     final ImagePicker picker = ImagePicker();
     final response = await picker.pickImage(source: ImageSource.gallery);
 
     if (response != null) {
-      Get.toNamed("/preview",
-          arguments: {"picture": response, "camera": camera});
+      Get.toNamed("/preview", arguments: {
+        "picture": response,
+        "camera": camera,
+      });
     }
   }
 
