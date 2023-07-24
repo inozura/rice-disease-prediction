@@ -17,117 +17,128 @@ class PreviewView extends GetView<PreviewController> {
   Widget build(BuildContext context) {
     PreviewController controller = Get.put(PreviewController());
 
-    return ColoredSafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(backgroundColor),
-        body: Stack(
-          children: [
-            Stack(
-              children: [
-                Positioned(
-                  right: -60,
-                  top: 50,
-                  child: Transform.scale(
-                    scaleX: -1,
-                    child: Transform.rotate(
-                      angle: math.pi / 6,
-                      child: SvgPicture.asset(
-                        'assets/svg/leaf.svg',
-                        width: 150,
+    return WillPopScope(
+      onWillPop: () async {
+        // Manually dispose of the controller before navigating back
+        Get.delete<PreviewController>();
+        controller.dispose();
+        return true; // Allow the native back navigation
+      },
+      child: ColoredSafeArea(
+        child: Scaffold(
+          backgroundColor: const Color(backgroundColor),
+          body: Stack(
+            children: [
+              Stack(
+                children: [
+                  Positioned(
+                    right: -60,
+                    top: 50,
+                    child: Transform.scale(
+                      scaleX: -1,
+                      child: Transform.rotate(
+                        angle: math.pi / 6,
+                        child: SvgPicture.asset(
+                          'assets/svg/leaf.svg',
+                          width: 150,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Positioned(
-                  right: -10,
-                  top: 0,
-                  child: Transform.scale(
-                    scaleX: -1,
-                    child: Transform.rotate(
-                      angle: math.pi / 25,
-                      child: SvgPicture.asset(
-                        'assets/svg/leaf.svg',
-                        width: 150,
+                  Positioned(
+                    right: -10,
+                    top: 0,
+                    child: Transform.scale(
+                      scaleX: -1,
+                      child: Transform.rotate(
+                        angle: math.pi / 25,
+                        child: SvgPicture.asset(
+                          'assets/svg/leaf.svg',
+                          width: 150,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                    margin: const EdgeInsets.only(top: 15, left: 10),
-                    alignment: Alignment.topLeft,
-                    child: IconButton(
-                        onPressed: () => Get.back(),
-                        icon: const Icon(
-                          Icons.arrow_back_ios,
-                          color: Color(primary),
-                        ))),
-                Column(
-                  children: [
-                    const Text(
-                      "Are sure to \nprocess this image?",
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(bottom: 0),
-                      alignment: Alignment.center,
-                      height: MediaQuery.of(context).size.height * 0.5,
-                      width: MediaQuery.of(context).size.width * 0.7,
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(20)),
-                          boxShadow: const [
-                            BoxShadow(
-                              offset: Offset(0, 0),
-                              spreadRadius: 10,
-                              blurRadius: 15,
-                              color: Color.fromRGBO(0, 0, 0, 0.1),
-                            )
-                          ],
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: FileImage(File(controller.picture.path)))),
-                    ),
-                  ],
-                ),
-                const Text(
-                    textAlign: TextAlign.center,
-                    "! Process can take a few seconds and may\n make your device heating, because classification\n process in the background"),
-                Container(
-                  margin: EdgeInsets.only(bottom: 15),
-                  child: ElevatedButton(
-                    onPressed: () => {
-                      controller.predictImage()
-                      // Get.toNamed("/result",
-                      //     arguments: {"picture": controller.picture})
-                    },
-                    style: const ButtonStyle(
-                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                ],
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      margin: const EdgeInsets.only(top: 15, left: 10),
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                          onPressed: () =>
+                              {Get.back(), Get.delete<PreviewController>()},
+                          icon: const Icon(
+                            Icons.arrow_back_ios,
+                            color: Color(primary),
+                          ))),
+                  Column(
+                    children: [
+                      const Text(
+                        "Are sure to \nprocess this image?",
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 0),
+                        alignment: Alignment.center,
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        decoration: BoxDecoration(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(25)))),
-                        textStyle:
-                            MaterialStatePropertyAll(TextStyle(fontSize: 20)),
-                        padding: MaterialStatePropertyAll(
-                            EdgeInsets.fromLTRB(30, 10, 30, 10)),
-                        backgroundColor:
-                            MaterialStatePropertyAll(Color(primary))),
-                    child: const Text(
-                      "PROCESS THIS IMAGE",
+                                const BorderRadius.all(Radius.circular(20)),
+                            boxShadow: const [
+                              BoxShadow(
+                                offset: Offset(0, 0),
+                                spreadRadius: 10,
+                                blurRadius: 15,
+                                color: Color.fromRGBO(0, 0, 0, 0.1),
+                              )
+                            ],
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image:
+                                    FileImage(File(controller.picture.path)))),
+                      ),
+                    ],
+                  ),
+                  const Text(
+                      textAlign: TextAlign.center,
+                      "! Process can take a few seconds and may\n make your device heating, because classification\n process in the background"),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 15),
+                    child: ElevatedButton(
+                      onPressed: () => {
+                        controller.predictImage()
+                        // Get.toNamed("/result",
+                        //     arguments: {"picture": controller.picture})
+                      },
+                      style: const ButtonStyle(
+                          shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(25)))),
+                          textStyle:
+                              MaterialStatePropertyAll(TextStyle(fontSize: 20)),
+                          padding: MaterialStatePropertyAll(
+                              EdgeInsets.fromLTRB(30, 10, 30, 10)),
+                          backgroundColor:
+                              MaterialStatePropertyAll(Color(primary))),
+                      child: const Text(
+                        "PROCESS THIS IMAGE",
+                      ),
                     ),
                   ),
-                ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

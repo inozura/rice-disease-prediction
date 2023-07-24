@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:rice_prediction/app/modules/camera/controllers/camera_controller.dart';
 import 'package:rice_prediction/constant/colors.dart';
 import 'package:rice_prediction/widgets/coloredsafearea.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -17,6 +18,7 @@ class ResultView extends GetView<ResultController> {
   @override
   Widget build(BuildContext context) {
     ResultController controller = Get.put(ResultController());
+    CameraController cameraController = Get.put(CameraController());
 
     return ColoredSafeArea(
       child: Scaffold(
@@ -344,7 +346,10 @@ class ResultView extends GetView<ResultController> {
                   bottom: controller.isOpenDialog.value ? 10 : -50,
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: ElevatedButton(
-                    onPressed: () => {Get.offAndToNamed("/home")},
+                    onPressed: () => {
+                      Get.offAndToNamed("/camera"),
+                      cameraController.updateGetBuilder()
+                    },
                     style: const ButtonStyle(
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius:

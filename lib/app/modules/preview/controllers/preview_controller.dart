@@ -23,7 +23,7 @@ class PreviewController extends GetxController {
 
     // Init camera state
     camera = arguments["camera"];
-    // camera.pausePreview(); //Disable for now
+    camera.pausePreview(); //Disable for now
 
     // Init model
     await Tflite.loadModel(
@@ -42,7 +42,7 @@ class PreviewController extends GetxController {
   void onClose() {
     super.onClose();
 
-    cameraController.updateGetBuilder();
+    // cameraController.updateGetBuilder();
     camera.resumePreview();
     Tflite.close();
 

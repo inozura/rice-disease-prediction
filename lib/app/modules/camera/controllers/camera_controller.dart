@@ -32,6 +32,8 @@ class CameraController extends GetxController {
   @override
   void onReady() {
     super.onReady();
+
+    print("CEKKKKKKKK");
   }
 
   @override
