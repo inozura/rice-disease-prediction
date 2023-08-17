@@ -1,16 +1,20 @@
-# rice_prediction
+# Rice Disease Prediction
 
-A new Flutter project.
+<p align="center"><img src="https://github.com/inozura/rice-disease-prediction/blob/master/assets/demo/Screenshot-RDP-app.png"></p>
 
-## Getting Started
+<p>Tools for predict/classification leaf rice disease</p>
 
-This project is a starting point for a Flutter application.
+### Usage
 
-A few resources to get you started if this is your first Flutter project:
+```
+# Install Dart SDK
+# Install Flutter SDK
+# Select List Device/Emulator, then run:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+$ flutter run android
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Resources
+
+<https://dart.dev>
+<https://docs.flutter.dev>
