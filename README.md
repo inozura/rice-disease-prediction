@@ -16,5 +16,5 @@ $ flutter run android
 
 ## Resources
 
-<https://dart.dev>
-<https://docs.flutter.dev>
+- <https://dart.dev>
+- <https://docs.flutter.dev>
